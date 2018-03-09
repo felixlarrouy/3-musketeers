@@ -98,3 +98,25 @@ test('should allow untest aliases', () => {
   expect(convert(4.6, 'Satoshi', 'μBTC')).toBe(convert(4.6, 'sat', 'bit'));
   expect(convert(4.6, 'BTC', 'μBTC')).toBe(convert(4.6, 'BTC', 'bit'));
 });
+
+test('add a new currency', () => {
+  convert.addUnit('AUS', 0.001);
+  expect(convert.units()).toContain('AUS');
+})
+
+test('should throw when adding existing currency with different conversion factor', () => {
+  expect(() => {
+    convert.addUnit('sat', 0.002);
+  }).toThrow();
+});
+
+test('delete a currency', () => {
+  convert.removeUnit('AUS');
+  expect(convert.units()).not.toContain('AUS');
+})
+
+test('should throw when removing predefined currency', () => {
+  expect(() => {
+    convert.removeUnit('BTC');
+  }).toThrow();
+});
